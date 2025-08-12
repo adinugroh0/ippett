@@ -1,41 +1,79 @@
-import { supabase } from "@/lib/supabaseClient";
-import Image from "next/image";
+// src/app/[id]/page.tsx
+"use client";
 
-interface Props {
-  params: { id: string };
+import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import Image from "next/image";
+import Link from "next/link";
+
+interface Berita {
+  id: number;
+  title: string;
+  description: string;
+  image_url: string;
 }
 
-export default async function BeritaDetail({ params }: Props) {
-  const { data, error } = await supabase
-    .from("berita")
-    .select("*")
-    .eq("id", params.id)
-    .single();
+export default function DetailBerita({ params }: { params: { id: string } }) {
+  const [berita, setBerita] = useState<Berita | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (error || !data) {
+  useEffect(() => {
+    if (params.id) {
+      fetchBerita();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id]);
+
+  const fetchBerita = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("berita") // ✅ cukup satu generic type
+      .select("id, title, description, image_url")
+      .eq("id", params.id)
+      .single();
+
+    if (error) {
+      console.error("Gagal memuat detail berita:", error.message);
+    } else {
+      setBerita(data);
+    }
+    setLoading(false);
+  };
+
+  if (loading) {
+    return <p className="text-center text-gray-500 py-10">Memuat berita...</p>;
+  }
+
+  if (!berita) {
     return (
-      <p className="text-center text-gray-500 mt-10">Berita tidak ditemukan.</p>
+      <p className="text-center text-gray-500 py-10">Berita tidak ditemukan.</p>
     );
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">{data.title || data.judul}</h1>
-      <p className="text-gray-500 text-sm mb-6">
-        Dipublikasikan pada:{" "}
-        {new Date(data.created_at).toLocaleDateString("id-ID")}
-      </p>
-      <div className="relative w-full h-96 mb-6">
+      <Link
+        href="/"
+        className="text-blue-600 hover:underline text-sm mb-4 inline-block">
+        ← Kembali ke daftar berita
+      </Link>
+
+      <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+        {berita.title}
+      </h1>
+
+      <div className="relative w-full h-80 mb-6">
         <Image
-          src={data.image_url}
-          alt={data.title || data.judul}
+          src={berita.image_url}
+          alt={berita.title}
           fill
           className="object-cover rounded-lg"
         />
       </div>
-      <div className="prose max-w-none">
-        <p>{data.content || data.description}</p>
-      </div>
+
+      <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+        {berita.description}
+      </p>
     </div>
   );
 }
