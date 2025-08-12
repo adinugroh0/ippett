@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "../../../lib/supabaseClient";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -51,7 +51,7 @@ export default function DetailBerita({ params }: { params: { id: string } }) {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <Link
-        href="/"
+        href="/berita"
         className="text-blue-600 hover:underline text-sm mb-4 inline-block">
         ← Kembali ke daftar berita
       </Link>

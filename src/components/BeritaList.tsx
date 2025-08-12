@@ -17,7 +17,7 @@ const BeritaList: React.FC = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("berita")
-      .select("*") // ambil semua kolom dulu
+      .select("*")
       .order("id", { ascending: false });
 
     if (error) {
@@ -45,12 +45,13 @@ const BeritaList: React.FC = () => {
             key={item.id}
             className="bg-white shadow-md rounded-lg overflow-hidden">
             <div className="relative w-full h-48">
-              <Link href={`/${item.id}`}>
+              <Link href={`/Berita/${item.id}`}>
                 <Image
                   src={item.image_url}
                   alt={item.title || item.judul || "Tanpa Judul"}
                   width={500}
                   height={300}
+                  className="object-cover"
                 />
               </Link>
             </div>
@@ -62,7 +63,7 @@ const BeritaList: React.FC = () => {
                 {item.description || "Tidak ada deskripsi."}
               </p>
               <Link
-                href={`/${item.id}`}
+                href={`/Berita/${item.id}`}
                 className="text-blue-600 hover:underline text-sm font-medium">
                 Baca selengkapnya →
               </Link>
