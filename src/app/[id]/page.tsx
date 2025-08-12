@@ -1,4 +1,3 @@
-// src/app/[id]/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,23 +12,29 @@ interface Berita {
   image_url: string;
 }
 
-export default function DetailBerita({ params }: { params: { id: string } }) {
+// ✅ Perbaikan Type Props untuk Next.js App Router
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function DetailBerita({ params }: PageProps) {
   const [berita, setBerita] = useState<Berita | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (params.id) {
-      fetchBerita();
+    if (params?.id) {
+      fetchBerita(params.id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.id]);
+  }, [params?.id]);
 
-  const fetchBerita = async () => {
+  const fetchBerita = async (id: string) => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("berita") // ✅ cukup satu generic type
+      .from("berita")
       .select("id, title, description, image_url")
-      .eq("id", params.id)
+      .eq("id", id)
       .single();
 
     if (error) {
