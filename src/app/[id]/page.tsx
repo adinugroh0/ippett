@@ -12,11 +12,8 @@ interface Berita {
   image_url: string;
 }
 
-// ✅ Perbaikan Type Props untuk Next.js App Router
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: { id: string };
 }
 
 export default function DetailBerita({ params }: PageProps) {
