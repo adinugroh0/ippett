@@ -12,11 +12,7 @@ interface Berita {
   image_url: string;
 }
 
-interface PageProps {
-  params: { id: string };
-}
-
-export default function DetailBerita({ params }: PageProps) {
+export default function DetailBerita({ params }: { params: { id: string } }) {
   const [berita, setBerita] = useState<Berita | null>(null);
   const [loading, setLoading] = useState(true);
 
