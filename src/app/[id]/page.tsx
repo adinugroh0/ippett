@@ -1,70 +1,79 @@
 // src/app/[id]/page.tsx
-import { createClient } from "@supabase/supabase-js";
-import Image from "next/image";
+"use client";
 
-// Definisi tipe untuk data berita
+import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import Image from "next/image";
+import Link from "next/link";
+
 interface Berita {
-  id: string;
+  id: number;
   title: string;
   description: string;
   image_url: string;
-  content: string;
 }
 
-// Definisi tipe untuk props halaman ini
-interface PageProps {
-  params: {
-    id: string;
+export default function DetailBerita({ params }: { params: { id: string } }) {
+  const [berita, setBerita] = useState<Berita | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (params.id) {
+      fetchBerita();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id]);
+
+  const fetchBerita = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("berita") // ✅ cukup satu generic type
+      .select("id, title, description, image_url")
+      .eq("id", params.id)
+      .single();
+
+    if (error) {
+      console.error("Gagal memuat detail berita:", error.message);
+    } else {
+      setBerita(data);
+    }
+    setLoading(false);
   };
-}
 
-// Inisialisasi Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+  if (loading) {
+    return <p className="text-center text-gray-500 py-10">Memuat berita...</p>;
+  }
 
-export default async function Page({ params }: PageProps) {
-  const { id } = params;
-
-  // Ambil data berita berdasarkan ID
-  const { data, error } = await supabase
-    .from("berita")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  // Jika error atau data null
-  if (error || !data) {
+  if (!berita) {
     return (
-      <div className="p-8 text-center text-red-600">
-        <h1>Berita tidak ditemukan</h1>
-        {error && <p>{error.message}</p>}
-      </div>
+      <p className="text-center text-gray-500 py-10">Berita tidak ditemukan.</p>
     );
   }
 
-  // Paksa casting ke Berita (TypeScript narrowing)
-  const berita = data as Berita;
-
   return (
-    <main className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">{berita.title}</h1>
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <Link
+        href="/"
+        className="text-blue-600 hover:underline text-sm mb-4 inline-block">
+        ← Kembali ke daftar berita
+      </Link>
 
-      {berita.image_url && (
-        <div className="mb-4 relative w-full h-64">
-          <Image
-            src={berita.image_url}
-            alt={berita.title}
-            fill
-            className="object-cover rounded-lg"
-          />
-        </div>
-      )}
+      <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+        {berita.title}
+      </h1>
 
-      <p className="text-gray-600 mb-6">{berita.description}</p>
+      <div className="relative w-full h-80 mb-6">
+        <Image
+          src={berita.image_url}
+          alt={berita.title}
+          fill
+          className="object-cover rounded-lg"
+        />
+      </div>
 
-      <article className="prose max-w-none">{berita.content}</article>
-    </main>
+      <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+        {berita.description}
+      </p>
+    </div>
   );
 }
