@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface Berita {
   id: number;
@@ -12,15 +13,16 @@ interface Berita {
   image_url: string;
 }
 
-export default function DetailBerita({ params }: { params: { id: string } }) {
+export default function DetailBerita() {
+  const { id } = useParams(); // 👈 ambil id dari URL
   const [berita, setBerita] = useState<Berita | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (params?.id) {
-      fetchBerita(params.id);
+    if (id) {
+      fetchBerita(id as string);
     }
-  }, [params?.id]);
+  }, [id]);
 
   const fetchBerita = async (id: string) => {
     setLoading(true);
@@ -51,7 +53,7 @@ export default function DetailBerita({ params }: { params: { id: string } }) {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <Link
-        href="/berita"
+        href="/"
         className="text-blue-600 hover:underline text-sm mb-4 inline-block">
         ← Kembali ke daftar berita
       </Link>
