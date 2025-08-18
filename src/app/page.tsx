@@ -10,24 +10,18 @@ export default function NFTLanding() {
     <div className="min-h-screen bg-gradient-to-b from-[#0b0f1a] via-[#0e1530] to-[#071123] text-white">
       {/* Navbar */}
       <header className="container mx-auto px-6 py-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="rounded-md p-1 bg-gradient-to-r from-purple-600 to-blue-400">
-            <div className="bg-[#071022] p-2 rounded">IPPET</div>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="hidden md:block">
-            <input
-              className="bg-[#0b1220] border border-[#1f2a44] px-3 py-2 rounded-lg text-sm placeholder:text-gray-400"
-              placeholder="Search"
-            />
-          </div>
-          <button
-            onClick={() => window.open("/Login")}
-            className="bg-gradient-to-r from-purple-500 to-blue-400 px-4 py-2 rounded-full text-sm font-medium">
-            Login
-          </button>
-        </div>
+        <div className="text-2xl font-extrabold">IPPET</div>
+        <nav className="hidden md:flex gap-8 text-gray-300">
+          <a href="#">Home</a>
+          <a href="#">Visi-misi</a>
+          <a href="#">Latar Belakang</a>
+          <a href="#">Sosial Media</a>
+        </nav>
+        <button
+          onClick={() => window.open("/Login")}
+          className="bg-gradient-to-r from-purple-500 to-blue-400 px-4 py-2 rounded-full text-sm font-medium">
+          Login
+        </button>
       </header>
 
       {/* Hero */}
@@ -66,9 +60,6 @@ export default function NFTLanding() {
                 }
                 className="px-5 py-3 rounded-full bg-gradient-to-r from-[#6a5cff] to-[#3dd1ff] font-semibold">
                 Intagram
-              </button>
-              <button className="px-5 py-3 rounded-full border border-[#2b3650] text-white">
-                Create
               </button>
             </div>
           </div>
