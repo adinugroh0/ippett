@@ -39,14 +39,21 @@ export default function NFTLanding() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
               className="text-4xl md:text-5xl font-extrabold leading-tight">
-              Welcome to IPPETT
+              Welcome to IPPET
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
               className="text-gray-300 max-w-xl">
-              Ikatan Pemuda Pemudi Tempel
+              Selamat datang di website resmi IPPET (Ikatan Pemuda Pemudi
+              Tempel) Kami hadir dengan semangat kebersamaan dan kepedulian
+              sosial, untuk menjadi wadah pemuda dalam berkarya, berinovasi,
+              serta berkontribusi bagi masyarakat dan lingkungan sekitar.Website
+              ini dibuat sebagai media informasi, komunikasi, dan dokumentasi
+              kegiatan Karang Taruna. Semoga dapat bermanfaat bagi anggota,
+              masyarakat, dan siapa pun yang ingin mengenal lebih dekat kegiatan
+              serta program kami.
             </motion.p>
 
             <div className="flex gap-4 items-center">
@@ -86,18 +93,25 @@ export default function NFTLanding() {
 
         {/* anggita */}
         <section className="py-10">
-          <h3 className="text-xl font-bold mb-4">Anggota</h3>
+          <h3 className="text-xl font-bold mb-4">Anggota Kelompok</h3>
           <div className="flex overflow-x-auto gap-3 py-2">
-            {new Array(10).fill(0).map((_, i) => (
+            {[
+              { nama: "Budi Santoso", peran: "Ketua" },
+              { nama: "Siti Aminah", peran: "Wakil Ketua" },
+              { nama: "Andi Wijaya", peran: "Sekretaris" },
+              { nama: "Dewi Lestari", peran: "Bendahara" },
+              { nama: "Rizky Pratama", peran: "Anggota" },
+              { nama: "Nurul Aisyah", peran: "Anggota" },
+              { nama: "Fajar Nugroho", peran: "Anggota" },
+              { nama: "Maya Putri", peran: "Anggota" },
+            ].map((anggota, i) => (
               <div
                 key={i}
-                className="min-w-[180px] bg-[#081229] border border-[#20304d] rounded-xl p-3 flex items-center gap-3">
+                className="min-w-[200px] bg-[#081229] border border-[#20304d] rounded-xl p-3 flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#7b61ff] to-[#3dd1ff]" />
                 <div>
-                  <div className="font-semibold">Artist {i + 1}</div>
-                  <div className="text-xs text-gray-400">
-                    {(200 + i * 5).toFixed(1)} Eth
-                  </div>
+                  <div className="font-semibold">{anggota.nama}</div>
+                  <div className="text-xs text-gray-400">{anggota.peran}</div>
                 </div>
               </div>
             ))}
