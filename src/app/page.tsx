@@ -93,7 +93,7 @@ export default function NFTLanding() {
 
         {/* anggita */}
         <section className="py-10">
-          <h3 className="text-xl font-bold mb-4">Anggota Kelompok</h3>
+          <h3 className="text-xl font-bold mb-4">Anggota Kelompok IPPET</h3>
           <div className="flex overflow-x-auto gap-3 py-2">
             {[
               { nama: "Budi Santoso", peran: "Ketua" },
